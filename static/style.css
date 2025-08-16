@@ -1,0 +1,88 @@
+/* Full page setup */
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Background image */
+body {
+    background: url('images/background.jpeg') no-repeat center center fixed;
+
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center; /* horizontal center */
+    align-items: center;     /* vertical center */
+    flex-direction: column;  /* allow stacking heading above form */
+}
+
+/* Form container overlay */
+form {
+    background-color: rgba(0, 0, 0, 0.7); /* semi-transparent black */
+    padding: 40px 50px;
+    border-radius: 15px;
+    color: #fff;
+    width: 400px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+    text-align: left;
+    margin-top: 20px; /* spacing from heading */
+}
+
+/* Centered heading above form */
+h1, h2 {
+    text-align: center;
+    width: 100%;
+    color: #ffcc00;
+    margin: 30px 0 10px 0; /* top-bottom spacing */
+    font-size: 32px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7); /* make text pop */
+}
+
+/* Labels styling */
+form label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #fff;
+}
+
+/* Inputs and selects styling */
+form input[type="number"],
+form select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: none;
+    font-size: 14px;
+    color: #000; /* input text black */
+    background-color: #fff; /* white background for readability */
+}
+
+/* Submit button styling */
+form input[type="submit"] {
+    margin-top: 25px;
+    padding: 12px 25px;
+    width: 100%;
+    background-color: #ff6600;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form input[type="submit"]:hover {
+    background-color: #ff9900;
+}
+
+/* Optional: add focus effect for inputs */
+form input[type="number"]:focus,
+form select:focus {
+    outline: none;
+    box-shadow: 0 0 5px #ffcc00;
+    border: 1px solid #ffcc00;
+}

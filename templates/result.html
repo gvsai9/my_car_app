@@ -2,20 +2,60 @@
 <html>
 <head>
     <title>Prediction Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 <body>
-    <h2>Car Price Prediction Result</h2>
-    <p><b>Owner:</b> {{ data.Owner_Type }}</p>
-    <p><b>Seats:</b> {{ data.Seats }}</p>
-    <p><b>Fuel:</b> {{ data.Fuel_Type }}</p>
-    <p><b>Transmission:</b> {{ data.Transmission }}</p>
-    <p><b>Mileage:</b> {{ data.Mileage}} km/l</p>
-    <p><b>Power:</b> {{ data.Power}} bhp</p>
-    <p><b>Engine:</b> {{ data.Engine}} CC</p>
-    <p><b>Predicted Price:</b> {{ data.Predicted_Price }}</p>
-    <p><b>Brand:</b> {{ data.Brand }}</p>
-    <p><b>Location:</b> {{ data.Location }}</p>
+    <h2 style="text-align:center; color:#ffcc00;">Car Price Prediction Result</h2>
+    <table class="result-table">
+        <tr>
+            <th>Feature</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <td>Brand</td>
+            <td>{{ data.Brand }}</td>
+        </tr>
+        <tr>
+            <td>Location</td>
+            <td>{{ data.Location }}</td>
+        </tr>
+        <tr>
+            <td>Owner_Type</td>
+            <td>{{ data.Owner_Type }}</td>
+        </tr>
+        <tr>
+            <td>Seats</td>
+            <td>{{ data.Seats }}</td>
+        </tr>
+        <tr>
+            <td>Fuel_Type</td>
+            <td>{{ data.Fuel_Type }}</td>
+        </tr>
+        <tr>
+            <td>Transmission</td>
+            <td>{{ data.Transmission }}</td>
+        </tr>
+        <tr>
+            <td>Mileage</td>
+            <td>{{ data.Mileage }} km/l</td>
+        </tr>
+        <tr>
+            <td>Power</td>
+            <td>{{ data.Power }} bhp</td>
+        </tr>
+        <tr>
+            <td>Engine</td>
+            <td>{{ data.Engine }} CC</td>
+        </tr>
+        <tr>
+            <td>Predicted Price</td>
+            <td>₹ {{ data.Predicted_Price }}</td>
+        </tr>
+    </table>
     <br>
-    <a href="/">Predict Again</a>
+    <div style="text-align:center;">
+        <a href="/">Predict Again</a>
+    </div>
 </body>
 </html>
