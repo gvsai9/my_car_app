@@ -2,18 +2,18 @@ from flask import Flask, render_template, request
 import pickle
 import pandas as pd
 
-app = Flask(__name__)
+application = Flask(__name__)
 
 # Load saved models and encoders
 model = pickle.load(open("model.pkl", "rb"))
 location_encoder = pickle.load(open("location_encoder.pkl", "rb"))
 brand_encoder = pickle.load(open("brand_encoder.pkl", "rb"))
 final_columns = pickle.load(open("columns.pkl", "rb"))
-@app.route("/")
+@application.route("/")
 def home():
     return render_template("index.html")
 
-@app.route("/predict", methods=["POST"])
+@application.route("/predict", methods=["POST"])
 def predict():
     print('j')
     # Read inputs exactly matching training feature names
@@ -59,4 +59,5 @@ def predict():
     return render_template("result.html", data=response_data)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0")
+    application.run(host="0.0.0.0")
+    application.run(host="0.0.0.0")
