@@ -15,7 +15,6 @@ def home():
 
 @application.route("/predict", methods=["POST"])
 def predict():
-    print('j')
     # Read inputs exactly matching training feature names
     brand = request.form["Brand"]
     location = request.form["Location"]
@@ -26,7 +25,6 @@ def predict():
     mileage = float(request.form["Mileage"])
     power = float(request.form["Power"])
     engine = int(request.form["Engine"])
-    print('jo')
     # Create DataFrame
     input_df = pd.DataFrame([{
         "Brand": brand,
@@ -39,7 +37,6 @@ def predict():
         "Power": power,
         "Engine": engine
     }])
-    print("ji")
     # Apply encoders
     input_df[["Location"]] = brand_encoder.transform(input_df[["Location"]])
     input_df[["Brand"]] = location_encoder.transform(input_df[["Brand"]])
@@ -55,9 +52,7 @@ def predict():
     prediction = model.predict(input_df)[0]
     response_data = request.form.to_dict()
     response_data["Predicted_Price"] = f"around {prediction} ₹"
-    print(response_data)
     return render_template("result.html", data=response_data)
 
 if __name__ == "__main__":
-    application.run(host="0.0.0.0")
     application.run(host="0.0.0.0")
