@@ -1,101 +1,248 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Car Price Prediction</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
-
+  <meta charset="UTF-8" />
+  <title>Car Price Prediction</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="/static/img/favicon.ico">
+  <style>
+    /* Minimal styling so it looks good even without your CSS file */
+    :root {
+      --bg: #0f172a;
+      --card: #111827cc;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #38bdf8;
+      --warn: #fbbf24;
+      --danger: #f87171;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100dvh;
+      background: radial-gradient(1200px 1200px at 10% 10%, #1f2937 0%, #0b1220 50%, #050814 100%);
+      color:var(--text); font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+      display:flex; align-items:center; justify-content:center; padding:24px;
+    }
+    .wrap{width:100%; max-width:900px}
+    .title{font-weight:700; letter-spacing:.3px; text-align:center; margin:0 0 18px; font-size: clamp(22px, 3vw, 30px)}
+    .card{
+      background: var(--card); backdrop-filter: blur(6px);
+      border:1px solid #1f2937; border-radius:18px; padding:22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    form{display:grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap:18px}
+    .field{display:flex; flex-direction:column; gap:8px}
+    label{font-size:14px; color:var(--muted)}
+    select, input[type=number], input[type=range]{
+      width:100%; border:1px solid #253041; border-radius:12px; padding:10px 12px;
+      background:#0b1220; color:var(--text); outline:none;
+    }
+    input[type=range]{padding:0; height:32px}
+    .range-row{display:flex; align-items:center; gap:10px}
+    .range-value{
+      min-width:68px; text-align:center; padding:6px 10px; border-radius:10px;
+      background:#0b1220; border:1px solid #253041; font-variant-numeric: tabular-nums;
+    }
+    .note{grid-column:1/-1; font-size:13px; color:var(--muted)}
+    .warn{color: var(--warn)}
+    .error{color: var(--danger); font-weight:600}
+    .actions{grid-column:1/-1; display:flex; gap:12px; justify-content:center; margin-top:4px}
+    .btn{
+      appearance:none; border:none; cursor:pointer; font-weight:600;
+      padding:12px 18px; border-radius:12px; transition: all .15s ease;
+    }
+    .btn-primary{ background: linear-gradient(135deg, #22d3ee, #3b82f6); color:#05060a }
+    .btn-primary:hover{ transform: translateY(-1px); box-shadow: 0 6px 18px rgba(56,189,248,.35) }
+    .btn-ghost{ background:transparent; color:var(--text); border:1px solid #273244 }
+    .grid-span-2{grid-column:span 2}
+    @media (max-width:720px){ .grid-span-2{grid-column:1/-1} }
+    .hint{font-size:12px; color:#8ea0b7}
+    .headerbar{display:flex; justify-content:center; margin-bottom:10px}
+  </style>
 </head>
 <body>
-    <h2>Car Price Prediction Form</h2>
-    <form action="/predict" method="POST">
+  <div class="wrap">
+    <div class="headerbar">
+      <h1 class="title">Car Price Prediction</h1>
+    </div>
+    <div class="card">
+      <form action="/predict" method="POST" id="car-form" novalidate>
+        <!-- DROPDOWNS -->
+        <div class="field">
+          <label for="Brand">Brand</label>
+          <select name="Brand" id="Brand" required>
+            <option value="" disabled selected>Select brand</option>
+            <option>Maruti</option><option>Hyundai</option><option>Honda</option>
+            <option>Audi</option><option>Nissan</option><option>Toyota</option>
+            <option>Volkswagen</option><option>Tata</option><option>Land</option>
+            <option>Mitsubishi</option><option>Renault</option><option>Mercedes-Benz</option>
+            <option>BMW</option><option>Mahindra</option><option>Ford</option>
+            <option>Porsche</option><option>Datsun</option><option>Jaguar</option>
+            <option>Volvo</option><option>Chevrolet</option><option>Skoda</option>
+            <option>Mini</option><option>Fiat</option><option>Jeep</option>
+            <option>Smart</option><option>Ambassador</option><option>Isuzu</option>
+            <option>ISUZU</option><option>Force</option><option>Bentley</option>
+            <option>Lamborghini</option><option>Hindustan</option><option>OpelCorsa</option>
+          </select>
+          <div class="hint">Used by the model via ordinal encoding.</div>
+        </div>
 
-        <label>Brand:</label>
-        <select name="Brand" required>
-            <option value="Maruti">Maruti</option>
-            <option value="Hyundai">Hyundai</option>
-            <option value="Honda">Honda</option>
-            <option value="Audi">Audi</option>
-            <option value="Nissan">Nissan</option>
-            <option value="Toyota">Toyota</option>
-            <option value="Volkswagen">Volkswagen</option>
-            <option value="Tata">Tata</option>
-            <option value="Land">Land</option>
-            <option value="Mitsubishi">Mitsubishi</option>
-            <option value="Renault">Renault</option>
-            <option value="Mercedes-Benz">Mercedes-Benz</option>
-            <option value="BMW">BMW</option>
-            <option value="Mahindra">Mahindra</option>
-            <option value="Ford">Ford</option>
-            <option value="Porsche">Porsche</option>
-            <option value="Datsun">Datsun</option>
-            <option value="Jaguar">Jaguar</option>
-            <option value="Volvo">Volvo</option>
-            <option value="Chevrolet">Chevrolet</option>
-            <option value="Skoda">Skoda</option>
-            <option value="Mini">Mini</option>
-            <option value="Fiat">Fiat</option>
-            <option value="Jeep">Jeep</option>
-            <option value="Smart">Smart</option>
-            <option value="Ambassador">Ambassador</option>
-            <option value="Isuzu">Isuzu</option>
-            <option value="ISUZU">ISUZU</option>
-            <option value="Force">Force</option>
-            <option value="Bentley">Bentley</option>
-            <option value="Lamborghini">Lamborghini</option>
-            <option value="Hindustan">Hindustan</option>
-            <option value="OpelCorsa">OpelCorsa</option>
-        </select><br><br>
+        <div class="field">
+          <label for="Location">Location</label>
+          <select name="Location" id="Location" required>
+            <option value="" disabled selected>Select city</option>
+            <option>Mumbai</option><option>Delhi</option><option>Bangalore</option>
+            <option>Chennai</option><option>Pune</option><option>Hyderabad</option>
+          </select>
+        </div>
 
-        <label>Location:</label>
-        <select name="Location" required>
-            <option value="Mumbai">Mumbai</option>
-            <option value="Delhi">Delhi</option>
-            <option value="Bangalore">Bangalore</option>
-            <option value="Chennai">Chennai</option>
-            <option value="Pune">Pune</option>
-            <option value="Hyderabad">Hyderabad</option>
-        </select><br><br>
+        <div class="field">
+          <label for="Fuel_Type">Fuel Type</label>
+          <select name="Fuel_Type" id="Fuel_Type" required>
+            <option value="" disabled selected>Select fuel</option>
+            <option>Petrol</option><option>Diesel</option><option>LPG</option><option>Electric</option>
+          </select>
+        </div>
 
-        <label>Owner_Type:</label>
-        <select name="Owner_Type" required>
-            <option value="First">First</option>
-            <option value="Second">Second</option>
-            <option value="Third">Third</option>
-            <option value="Fourth & Above">Fourth & Above</option>
-        </select><br><br>
+        <div class="field">
+          <label for="Transmission">Transmission</label>
+          <select name="Transmission" id="Transmission" required>
+            <option value="" disabled selected>Select transmission</option>
+            <option>Manual</option><option>Automatic</option>
+          </select>
+        </div>
 
-        <label>Seats:</label>
-        <select name="Seats" required>
-            <option value="5">5</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-        </select><br><br>
+        <div class="field">
+          <label for="Owner_Type">Owner Type</label>
+          <select name="Owner_Type" id="Owner_Type" required>
+            <option value="" disabled selected>Select owner type</option>
+            <option>First</option><option>Second</option><option>Third</option><option>Fourth & Above</option>
+          </select>
+        </div>
 
-        <label>Fuel_Type:</label>
-        <select name="Fuel_Type" required>
-            <option value="Petrol">Petrol</option>
-            <option value="Diesel">Diesel</option>
-            <option value="LPG">LPG</option>
-            <option value="Electric">Electric</option>
-        </select><br><br>
+        <div class="field">
+          <label for="Seats">Seats</label>
+          <select name="Seats" id="Seats" required>
+            <option value="" disabled selected>Select seats</option>
+            <option value="5">5</option><option value="7">7</option><option value="8">8</option>
+          </select>
+        </div>
 
-        <label>Transmission:</label>
-        <select name="Transmission" required>
-            <option value="Manual">Manual</option>
-            <option value="Automatic">Automatic</option>
-        </select><br><br>
+        <!-- SLIDERS -->
+        <div class="field grid-span-2">
+          <label for="Mileage">Mileage (km/l) <span class="hint">(2–35)</span></label>
+          <div class="range-row">
+            <input type="range" id="Mileage" name="Mileage" min="2" max="35" step="0.1" value="18">
+            <div class="range-value" id="Mileage_val">18.0</div>
+          </div>
+          <div class="note" id="Mileage_note"></div>
+        </div>
 
-        <label>Mileage (km/l):</label>
-        <input type="number" step="0.1" name="Mileage" required><br><br>
+        <div class="field grid-span-2">
+          <label for="Power">Power (bhp) <span class="hint">(35–600)</span></label>
+          <div class="range-row">
+            <input type="range" id="Power" name="Power" min="35" max="600" step="1" value="100">
+            <div class="range-value" id="Power_val">100</div>
+          </div>
+          <div class="note" id="Power_note"></div>
+        </div>
 
-        <label>Power (bhp):</label>
-        <input type="number" step="0.1" name="Power" required><br><br>
+        <div class="field grid-span-2">
+          <label for="Engine">Engine (CC) <span class="hint">(1000–8000)</span></label>
+          <div class="range-row">
+            <input type="range" id="Engine" name="Engine" min="1000" max="8000" step="10" value="1500">
+            <div class="range-value" id="Engine_val">1500</div>
+          </div>
+          <div class="note" id="Engine_note"></div>
+        </div>
 
-        <label>Engine (CC):</label>
-        <input type="number" name="Engine" required><br><br>
+        <div class="field grid-span-2">
+          <label for="Year">Year <span class="hint">(1995–2025)</span></label>
+          <div class="range-row">
+            <input type="range" id="Year" name="Year" min="1995" max="2025" step="1" value="2015">
+            <div class="range-value" id="Year_val">2015</div>
+          </div>
+          <div class="note" id="Year_note"></div>
+        </div>
 
-        <input type="submit" value="Predict Price">
-    </form>
+        <div class="actions">
+          <button class="btn btn-ghost" type="reset" id="reset-btn">Reset</button>
+          <button class="btn btn-primary" type="submit">Predict Price</button>
+        </div>
+
+        <div class="note">
+          <strong>Heads up:</strong> If any value goes out of range we’ll warn you and block submission.
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Live value mirrors for sliders
+    const sliders = [
+      { id: 'Mileage', min: 2, max: 35, warnLow: 3, warnHigh: 30, unit: ' km/l' },
+      { id: 'Power',   min: 35, max: 600, warnLow: 45, warnHigh: 500, unit: ' bhp' },
+      { id: 'Engine',  min: 1000, max: 8000, warnLow: 900, warnHigh: 6000, unit: ' cc' },
+      { id: 'Year',    min: 1995, max: 2025, warnLow: 2000, warnHigh: 2025, unit: '' }
+    ];
+
+    function setText(id, txt){ document.getElementById(id).textContent = txt; }
+
+    function attachSlider(sl) {
+      const input = document.getElementById(sl.id);
+      const out   = document.getElementById(sl.id + '_val');
+      const note  = document.getElementById(sl.id + '_note');
+
+      const render = () => {
+        const v = parseFloat(input.value);
+        out.textContent = (sl.id === 'Power' || sl.id === 'Engine') ? Math.round(v) : v.toFixed(sl.id==='Mileage'?1:0);
+
+        // Warnings
+        note.classList.remove('warn','error');
+        note.textContent = '';
+        if (v < sl.min || v > sl.max) {
+          note.classList.add('error');
+          note.textContent = `Out of allowed range (${sl.min}–${sl.max}${sl.unit}).`;
+        } else if (v <= sl.warnLow || v >= sl.warnHigh) {
+          note.classList.add('warn');
+          note.textContent = `Unusual value for ${sl.id.toLowerCase()}. Please double-check.`;
+        }
+      };
+
+      input.addEventListener('input', render);
+      render();
+    }
+
+    sliders.forEach(attachSlider);
+
+    // Prevent submit when any slider is out-of-range or required select missing
+    document.getElementById('car-form').addEventListener('submit', (e) => {
+      let ok = true;
+
+      // Check selects required
+      ['Brand','Location','Fuel_Type','Transmission','Owner_Type','Seats'].forEach(id=>{
+        const el = document.getElementById(id);
+        if (!el.value) ok = false;
+      });
+
+      // Check sliders in hard range
+      sliders.forEach(sl=>{
+        const v = parseFloat(document.getElementById(sl.id).value);
+        if (v < sl.min || v > sl.max) ok = false;
+      });
+
+      if (!ok) {
+        e.preventDefault();
+        alert('Please fix the highlighted warnings before submitting.');
+      }
+    });
+
+    // Reset handler
+    document.getElementById('reset-btn').addEventListener('click', () => {
+      setTimeout(()=> sliders.forEach(sl=>{
+        document.getElementById(sl.id).dispatchEvent(new Event('input'));
+      }), 0);
+    });
+  </script>
 </body>
 </html>
